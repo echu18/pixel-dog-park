@@ -35,7 +35,8 @@ var HEIGHT,
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 
-camera.position.z = 5;
+camera.position.z = -200;
+camera.position.x = 200;
 
 var renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setClearColor('#e5e5e5');
@@ -56,15 +57,28 @@ window.addEventListener('resize', () => {
 
 // Set up lighting
 function createLights() {
-    var backLight = new THREE.PointLight(0xFFFFFF, 1, 1000)
-    backLight.position.set(0, 0, 0)
+    // var backLight = new THREE.PointLight(0xFFFFFF, 1, 1000)
+    // backLight.position.set(0, 100, 1000)
     
-    var frontLight = new THREE.DirectionalLight(0xFFFFFF, 1, 100)
-    frontLight.position.set(100,0,100)
+    // var frontLight = new THREE.PointLight(0xFFFFFF, 1, 1000)
+    // frontLight.position.set(0, 200, 100)
     
-    scene.add(backLight);
-    scene.add(frontLight);
-}
+    // var leftLight = new THREE.DirectionalLight(0xFFFFFF, 1, 1000)
+    // leftLight.position.set(100,0,100)
+    
+    
+    // var ambientLight = new THREE.AmbientLight(0x404040);
+    
+
+    var light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1.4);
+    scene.add(light);
+
+    // scene.add(backLight);
+    // scene.add(frontLight);
+    // scene.add(leftLight);
+    
+    // scene.add(ambientLight)
+;}
 
 
 
@@ -97,32 +111,101 @@ function createDoge() {
 // Doge
 
 Doge = function () {
-    var beige = new THREE.Color("hsl(17, 80%, 60%)");
-    this.beigeColor = new THREE.MeshLambertMaterial({
-        color: beige,
-        shading: THREE.FlatShading
-    });
+    // Colors
+    var orange = new THREE.Color("hsl(17, 80%, 60%)");
+    // var orangeMat = new THREE.MeshLambertMaterial({ color: orange, wireframe: true, opacity: 0.85, shading: THREE.FlatShading });
+    var orangeMat = new THREE.MeshLambertMaterial({ color: orange, opacity: 0.85, shading: THREE.FlatShading });
+
+    var white = new THREE.Color("17, 5%, 95%");
+    var whiteMat = new THREE.MeshLambertMaterial({ color: white, opacity: 0.85, shading: THREE.FlatShading });
 
 
 
-    // var bodyGeom = new THREE.CylinderGeometry(30, 80, 140, 4);
-    var bodyGeom = new THREE.CylinderGeometry(10, 10, 20, 32);
 
-    // var bodyGeom = new THREE.BoxGeometry(1, 1, 1);
-    // this.material = new THREE.MeshLambertMaterial({color: 0xad3525});
-    this.body = new THREE.Mesh(bodyGeom, this.beigeColor)
-    // this.body = new THREE.Mesh(bodyGeom, this.beigeColor)
+    // Body
+    this.body = new THREE.Group();
 
+    var chestGeom = new THREE.BoxGeometry(70, 70, 10);
+    var chest = new THREE.Mesh(chestGeom, whiteMat)
 
-    this.body.position.z = 3;
-    this.body.position.y = 0;
-    this.bodyVertices = [0, 1, 2, 3, 4, 10];
-
-    this.body.geometry.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 3));
+    chest.position.x = 0;
+    chest.position.y = 0;
+    chest.position.z = -10;
 
 
+
+    var bodyFrontGeom = new THREE.BoxGeometry(70, 120, 50);
+    var bodyFront = new THREE.Mesh(bodyFrontGeom, orangeMat)
+
+    bodyFront.position.x = 0;
+    bodyFront.position.y = 0;
+    bodyFront.position.z = 20;
+    
+    
+    var bodyMidGeom = new THREE.BoxGeometry(70,100,60);
+    var bodyMid = new THREE.Mesh(bodyMidGeom, orangeMat);
+    
+    bodyMid.position.x = 0;
+    bodyMid.position.y = -10;
+    bodyMid.position.z = 40;
+    
+
+
+    var bodyBackGeom = new THREE.BoxGeometry(70,80,60);
+    var bodyBack = new THREE.Mesh(bodyBackGeom, orangeMat);
+    
+    bodyBack.position.x = 0;
+    bodyBack.position.y = -20;
+    bodyBack.position.z = 60;
+
+    
+    this.body.add(chest);
+    this.body.add(bodyFront);
+    this.body.add(bodyMid);
+    this.body.add(bodyBack);
+
+
+
+
+
+    // Face
+    var faceGeom = new THREE.BoxGeometry(70, 60, 50);
+    this.face = new THREE.Mesh(faceGeom, orangeMat);
+    
+    this.face.position.z = 0;
+    this.face.position.y = 80;
+    this.face.position.x = 0;
+    
+
+
+    // Ears
+    var earGeom = new THREE.BoxGeometry(5,5,5);
+    this.leftEar = new THREE.Mesh(earGeom, orangeMat);
+
+
+    // this.head.position.z = 15;
+    // this.head.position.y = 10;
+    // this.head.position.x = 0;
+
+
+
+    // Face
+    var eyeGeom
+    var snoutGeom
+    
+
+
+
+
+
+
+
+
+
+    // this.body = new THREE.Group()
 
     scene.add(this.body);
+    scene.add(this.face);
 
 
 }
