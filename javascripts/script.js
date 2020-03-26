@@ -2,44 +2,44 @@
 
 
 
-var scene,
-    camera,
-    controls,
-    fieldOfView,
-    aspectRatio,
-    nearPlane,
-    farPlane,
-    shadowLight,
-    backLight,
-    light,
-    renderer,
-    container;
+// var scene,
+//     camera,
+//     controls,
+//     fieldOfView,
+//     aspectRatio,
+//     nearPlane,
+//     farPlane,
+//     shadowLight,
+//     backLight,
+//     light,
+//     renderer,
+//     container;
 
-//SCENE
-var floor, lion, fan,
-    isBlowing = false;
+// //SCENE
+// var floor, lion, fan,
+//     isBlowing = false;
 
-//SCREEN VARIABLES
+// //SCREEN VARIABLES
 
-var HEIGHT,
-    WIDTH,
-    windowHalfX,
-    windowHalfY,
-    mousePos = { x: 0, y: 0 };
-    dist = 0;
+// var HEIGHT,
+//     WIDTH,
+//     windowHalfX,
+//     windowHalfY,
+//     mousePos = { x: 0, y: 0 };
+//     dist = 0;
 
 
 
 
     
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera(100, window.innerWidth/window.innerHeight, 0.1, 2000);
 
 camera.position.x = 10;
 camera.position.y = 100;
 camera.position.z = -500;
 
-var renderer = new THREE.WebGLRenderer({antialias: true});
+var renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 renderer.setClearColor('#e5e5e5');
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -62,26 +62,43 @@ function createLights() {
     // backLight.position.set(0, 100, 1000)
     
     // var frontLight = new THREE.PointLight(0xFFFFFF, 1, 500)
-    // frontLight.position.set(50, 5, 10)
+    // // frontLight.position.set(50, 5, 10)
     
-    // var backLight = new THREE.DirectionalLight(0xFFFFFF, 0.1, 1000)
-    // backLight.position.set(10,20,10)
+    // // var backLight = new THREE.DirectionalLight(0xFFFFFF, 0.1, 1000)
+    // // backLight.position.set(10,20,10)
 
-    var frontLight = new THREE.DirectionalLight(0xFFFFFF, 0.1, 1000)
-    frontLight.position.set(0,0,-15)
+    // var frontLight = new THREE.DirectionalLight(0xFFFFFF, 0.1, 1000)
+    // frontLight.position.set(0,0,-15)
    
     
-    // var ambientLight = new THREE.AmbientLight(0x404040);
+    // // var ambientLight = new THREE.AmbientLight(0x404040);
     
 
-    var light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1.4);
-    scene.add(light);
+    // var light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1.4);
+    // scene.add(light);
 
-    // scene.add(backLight);
-    // scene.add(backLight);
-    scene.add(frontLight);
+    // // scene.add(backLight);
+    // // scene.add(backLight);
+    // scene.add(frontLight);
     
     // scene.add(ambientLight)
+
+
+    light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5)
+
+    shadowLight = new THREE.DirectionalLight(0xffffff, .1);
+    shadowLight.position.set(200, 200, 200);
+    shadowLight.castShadow = true;
+    shadowLight.shadowDarkness = .2;
+
+    backLight = new THREE.DirectionalLight(0xffffff, .4);
+    backLight.position.set(-100, 500, -700);
+    backLight.shadowDarkness = .1;
+    backLight.castShadow = true;
+
+    scene.add(backLight);
+    scene.add(light);
+    scene.add(shadowLight);
 ;}
 
 
@@ -98,11 +115,11 @@ var mouse = new THREE.Vector2();
 
 
 // Colors
-var orange = new THREE.Color("hsl(17, 80%, 60%)");
+var orange = new THREE.Color("hsl(31, 77%, 48%)");
 // var orangeMat = new THREE.MeshLambertMaterial({ color: orange, wireframe: true, opacity: 0.85, shading: THREE.FlatShading });
 var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 1, shading: THREE.FlatShading });
 
-var white = new THREE.Color("hsl(17, 5%, 95%)");
+var white = new THREE.Color("hsl(30, 53%, 66%)");
 var whiteMat = new THREE.MeshLambertMaterial({ color: white, opacity: 0.85, shading: THREE.FlatShading });
 
 
@@ -124,16 +141,15 @@ var green = new THREE.Color("hsl(113, 83%, 31%)");
 
 
 
+function createGrass(){
+    var groundGeom = new THREE.PlaneBufferGeometry(500, 500, 8, 8);
+    var groundMat = new THREE.MeshBasicMaterial({ color: green, side: THREE.DoubleSide });
+    var grass = new THREE.Mesh(groundGeom, groundMat);
+    grass.rotateX(- Math.PI / 2);
+    grass.position.y = -60;
 
-var groundGeom = new THREE.PlaneBufferGeometry(500, 500, 8, 8);
-var groundMat = new THREE.MeshBasicMaterial({ color: green, side: THREE.DoubleSide });
-var plane = new THREE.Mesh(groundGeom, groundMat);
-plane.rotateX(- Math.PI / 2);
-plane.position.y = -60;
-
-scene.add(plane);
-
-
+    scene.add(grass);
+}
 
 
 
@@ -173,22 +189,28 @@ Dog = function () {
     // Head
     this.head = new THREE.Group();
     
-        var headBackGeom = new THREE.BoxGeometry(70, 70, 50);
+        var headBackGeom = new THREE.BoxGeometry(75, 80, 45);
         var headBack = new THREE.Mesh(headBackGeom, orangeMat);
             headBack.position.x = 0;
             headBack.position.y = 60;
             headBack.position.z = 0;
 
 
-        var headTopGeom = new THREE.BoxGeometry(20, 70, 50);
-        var headTop = new THREE.Mesh(headTopGeom, whiteMat);
+        var headTopGeom = new THREE.BoxGeometry(30, 15, 50);
+        var headTop = new THREE.Mesh(headTopGeom, orangeMat);
             headTop.position.x = 0;
-            headTop.position.y = 62;
-            headTop.position.z = -30;
+            headTop.position.y = 95;
+            headTop.position.z = -20;
+
+        var headFrontGeom = new THREE.BoxGeometry(20, 55, 45);
+        var headFront = new THREE.Mesh(headFrontGeom, orangeMat);
+            headFront.position.x = 0;
+            headFront.position.y = 68;
+            headFront.position.z = -30;
 
 
 
-        var headMidGeom = new THREE.BoxGeometry(60, 50, 45);
+        var headMidGeom = new THREE.BoxGeometry(65, 45, 30);
         var headMid = new THREE.Mesh(headMidGeom, orangeMat);
             headMid.position.x = 0;
             headMid.position.y = 70;
@@ -205,7 +227,7 @@ Dog = function () {
 
 
 
-        var snoutBackGeom = new THREE.BoxGeometry(30, 30, 35);
+        var snoutBackGeom = new THREE.BoxGeometry(35, 25, 35);
 
         var snoutBack = new THREE.Mesh(snoutBackGeom, whiteMat);
         snoutBack.position.x = 0;
@@ -235,33 +257,39 @@ Dog = function () {
 
 
     // Cheeks
-        var cheekGeom = new THREE.BoxGeometry(13, 35, 45);
+        var innerCheekGeom = new THREE.BoxGeometry(90, 50, 45);
+            var innerCheek = new THREE.Mesh(innerCheekGeom, orangeMat);
+            innerCheek.position.x = 0;
+            innerCheek.position.y = 65;
+            innerCheek.position.z = -10;
 
-            var leftCheek = new THREE.Mesh(cheekGeom, orangeMat);
-            leftCheek.position.x = 40;
-            leftCheek.position.y = 65;
-            leftCheek.position.z = -10;
 
 
-        var cheekGeom = new THREE.BoxGeometry(13, 35, 45);
+        var outerCheekGeom = new THREE.BoxGeometry(105, 35, 45);
+            var outerCheek = new THREE.Mesh(outerCheekGeom, orangeMat);
+            outerCheek.position.x = 0;
+            outerCheek.position.y = 65;
+            outerCheek.position.z = -10;
 
-            var rightCheek = new THREE.Mesh(cheekGeom, orangeMat);
-            rightCheek.position.x = -40;
-            rightCheek.position.y = 65;
-            rightCheek.position.z = -10;
 
 
         this.head.add(headBack)
+        this.head.add(headFront)
         this.head.add(headTop)
         this.head.add(headMid)
+        this.head.add(snoutBack)
+        this.head.add(snoutFront)
+        this.head.add(innerCheek)
+        this.head.add(outerCheek)
+        this.head.add(nose)
 
 
     // Ears
     this.ears = new THREE.Group();
     this.leftEar = new THREE.Group();
     
-        var earGeom = new THREE.BoxGeometry(20, 30, 20);
-        var innerEarGeom = new THREE.BoxGeometry(10,15,2);
+        var earGeom = new THREE.BoxGeometry(25, 30, 20);
+        var innerEarGeom = new THREE.BoxGeometry(10,20,2);
 
         var leftEar = new THREE.Mesh(earGeom, orangeMat);
 
@@ -279,7 +307,9 @@ Dog = function () {
 
             this.leftEar.add(leftEar);
             this.leftEar.add(leftInnerEar);
-            this.leftEar.rotation.y = 0.2;
+            this.leftEar.position.x = -15;
+            this.leftEar.rotation.y = -0.1;
+            this.leftEar.rotation.z = -0.10;
 
 
     this.rightEar = new THREE.Group();
@@ -300,7 +330,9 @@ Dog = function () {
 
             this.rightEar.add(rightEar);
             this.rightEar.add(rightInnerEar);
-            this.rightEar.rotation.y = -0.2;
+            this.rightEar.position.x = 15;
+            this.rightEar.rotation.y = 0.1;
+            this.rightEar.rotation.z = 0.10;
 
 
 
@@ -308,18 +340,23 @@ Dog = function () {
         this.ears.add(this.rightEar);
 
         this.ears.position.y = -8;
-        this.ears.position.z = -10;
+        this.ears.position.z = 10;
 
+
+
+
+        this.eyes = new THREE.Group()
     
         // var eyeGeom = new THREE.SphereGeometry(7, 7, 7);
         // var roundEyeGeom = new THREE.SphereGeometry(5, 7, 7);
-        var squareEyeGeom = new THREE.BoxGeometry(7, 13, 5);
+        var squareEyeGeom = new THREE.BoxGeometry(8, 13, 5);
         // var eyeGlareGeom = new THREE.BoxGeometry(5, 5, 5);
         // var roundEyeGeom = new THREE.SphereGeometry(5, 5, 5);
+        var eyeBrowGeom = new THREE.BoxGeometry(12,5,5);
 
 
         var leftEye = new THREE.Mesh(squareEyeGeom, blackMat);
-            leftEye.position.x = 15;
+            leftEye.position.x = 17;
             leftEye.position.y = 80;
             leftEye.position.z = -53;
             // leftEye.rotation.z = -55;
@@ -336,29 +373,62 @@ Dog = function () {
         //     leftEyeGlare.position.z = -56;
         //     // leftEyeGlare.rotation.z = -70;
 
+
+        var leftEyeBrow = new THREE.Mesh(eyeBrowGeom, whiteMat);
+            leftEyeBrow.position.x = 17;
+            leftEyeBrow.position.y = 90;
+            leftEyeBrow.position.z = -55;
+            // leftEyeBrow.rotation.z = -53;
+
+
         var rightEye = new THREE.Mesh(squareEyeGeom, blackMat);
-            rightEye.position.x = -15;
+            rightEye.position.x = -17;
             rightEye.position.y = 80;
             rightEye.position.z = -53;
             // rightEye.rotation.z = -55;
             // rightEye.scale.setX(1.3)
 
 
+            
+        var rightEyeBrow = new THREE.Mesh(eyeBrowGeom, whiteMat);
+            rightEyeBrow.position.x = -17;
+            rightEyeBrow.position.y = 90;
+            rightEyeBrow.position.z = -53;
+            // rightEyeBrow.rotation.z = 53;
+
+
+
+        this.eyes.add(leftEye);
+        this.eyes.add(rightEye);
+        this.eyes.add(leftEyeBrow);
+        this.eyes.add(rightEyeBrow);
+        this.eyes.position.z = 7
+
+
+
+
+
+
+
 
 
     // Mouth 
     this.mouth = new THREE.Group();
-        var mouthGeom = new THREE.BoxGeometry(10, 10, 5);
+        var mouthGeom = new THREE.BoxGeometry(15, 12, 20);
 
-        var leftMouth = new THREE.Mesh(mouthGeom, blueMat);
+        var leftMouth = new THREE.Mesh(mouthGeom, whiteMat);
+            leftMouth.position.x = 8;
+            leftMouth.position.y = 56;
+            leftMouth.position.z = -76;
 
-        leftMouth.position.x = 0;
-        leftMouth.position.y = 50;
-        leftMouth.position.z = -60;
 
-
+        var rightMouth = new THREE.Mesh(mouthGeom, whiteMat);
+            rightMouth.position.x = -8;
+            rightMouth.position.y = 56;
+            rightMouth.position.z = -76;
 
     this.mouth.add(leftMouth);
+    this.mouth.add(rightMouth);
 
 
 
@@ -366,8 +436,9 @@ Dog = function () {
 
 
     // this.head.add(mouth)
-    this.head.add(leftCheek)
-    this.head.add(rightCheek)
+    // this.head.add(innerCheek)
+    // this.head.add(outerCheek)
+    // this.head.add(rightCheek)
     // this.head.add(leftEar)
     // this.head.add(leftInnerEar)
     // this.head.add(rightEar)
@@ -377,18 +448,20 @@ Dog = function () {
     // this.head.add(faceBack)
     // this.head.add(faceMid1)
     // this.head.add(faceFront)
-    this.head.add(leftEye)
-    this.head.add(rightEye)
+    // this.head.add(leftEye)
+    // this.head.add(rightEye)
+    this.head.add(this.eyes)
     // this.head.add(leftEyeGlare)
     // this.head.add(rightEyeGlare)
-    this.head.add(snoutBack)
-    this.head.add(snoutFront)
-    this.head.add(nose)
+    // this.head.add(snoutBack)
+    // this.head.add(snoutFront)
+    // this.head.add(nose)
     this.head.add(this.mouth)
 
 
     this.head.position.y = 15
     this.head.position.z = 10
+    this.head.scale.y = 1.1;
 
 
 
@@ -405,17 +478,17 @@ Dog = function () {
     this.torso = new THREE.Group();
 
     // Main body
-    var bodyChestGeom = new THREE.BoxGeometry(45, 40, 5);
+    var bodyChestGeom = new THREE.BoxGeometry(45, 45, 7);
     var bodyChest = new THREE.Mesh(bodyChestGeom, whiteMat)
         bodyChest.position.x = 0;
-        bodyChest.position.y = 23;
+        bodyChest.position.y = 15;
         bodyChest.position.z = -25;
 
 
     var bodyFrontGeom = new THREE.BoxGeometry(60, 75, 70);
     var bodyFront = new THREE.Mesh(bodyFrontGeom, orangeMat)
         bodyFront.position.x = 0;
-        bodyFront.position.y = 35;
+        bodyFront.position.y = 30;
         bodyFront.position.z = 10;
     
     
@@ -607,6 +680,7 @@ Dog = function () {
 // Rendering
 
 createLights();
+createGrass();
 createDog();
 
 
@@ -620,7 +694,7 @@ var render = function () {
 }
 
 
-new THREE.OrbitControls(camera, renderer.domElement)
+controls = new THREE.OrbitControls(camera, renderer.domElement)
 render();
 
 
