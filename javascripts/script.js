@@ -41,8 +41,8 @@ camera.position.z = -500;
 
 var renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 renderer.setClearColor('#e5e5e5');
+renderer.shadowMap.enabled = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
-
 document.body.appendChild(renderer.domElement);
 
 window.addEventListener('resize', () => {
@@ -71,7 +71,7 @@ function createLights() {
     // frontLight.position.set(0,0,-15)
    
     
-    // // var ambientLight = new THREE.AmbientLight(0x404040);
+    // var ambientLight = new THREE.AmbientLight(0x404040, 3);
     
 
     // var light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1.4);
@@ -81,26 +81,69 @@ function createLights() {
     // // scene.add(backLight);
     // scene.add(frontLight);
     
-    // scene.add(ambientLight)
-
-
-    light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5)
-
-    shadowLight = new THREE.DirectionalLight(0xffffff, .1);
-    shadowLight.position.set(200, 200, 200);
-    shadowLight.castShadow = true;
-    shadowLight.shadowDarkness = .2;
-
-    backLight = new THREE.DirectionalLight(0xffffff, .4);
-    backLight.position.set(-100, 500, -700);
-    backLight.shadowDarkness = .1;
+    
+    
+    // light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5)
+    
+    // shadowLight = new THREE.DirectionalLight(0xffffff, .1);
+    // shadowLight.position.set(50, 100, -150);
+    // shadowLight.castShadow = true;
+    // shadowLight.shadowDarkness = .2;
+    
+    backLight = new THREE.DirectionalLight(0xffffff, 1);
+    backLight.position.set(50, 100, 150);;
     backLight.castShadow = true;
 
-    scene.add(backLight);
-    scene.add(light);
-    scene.add(shadowLight);
-;}
+    frontLight = new THREE.DirectionalLight(0xffffff, 1);
+    frontLight.position.set(0, 70, -150);;
+    frontLight.castShadow = true;
 
+    leftLight = new THREE.DirectionalLight(0xffffff, 1);
+    leftLight.position.set(100, 0, 0);;
+    leftLight.castShadow = true;
+
+    rightLight = new THREE.DirectionalLight(0xffffff, 1);
+    rightLight.position.set(-100, 0, 0);;
+    rightLight.castShadow = true;
+
+    // backLight.position.set(-100, 500, -700);
+    // backLight.shadowDarkness = .1;
+    
+    // scene.add(ambientLight)
+    scene.add(backLight);
+    scene.add(frontLight);
+    scene.add(leftLight);
+    scene.add(rightLight);
+    // scene.add(frontLight);
+    // scene.add(light);
+    // scene.add(shadowLight);
+
+
+
+
+    
+    
+    
+}
+
+
+// function getSpotLight(color, intensity) {
+//     var light = new THREE.SpotLight(color, intensity);
+
+//     return light;
+// }
+
+// var spotLight_01 = getSpotLight(0xffffff, 1);
+// scene.add(spotLight_01);
+
+
+// var spotLight_02 = getSpotLight(0xffffff, 1);
+// scene.add(spotLight_02);
+
+
+// spotLight_01.position.x = 50;
+// spotLight_01.position.y = 100;
+// spotLight_01.position.z = -150;
 
 
 // Set up mouse/key/etc events
@@ -117,23 +160,26 @@ var mouse = new THREE.Vector2();
 // Colors
 var orange = new THREE.Color("hsl(31, 77%, 48%)");
 // var orangeMat = new THREE.MeshLambertMaterial({ color: orange, wireframe: true, opacity: 0.85, shading: THREE.FlatShading });
-var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 1, shading: THREE.FlatShading });
+var orangeMat = new THREE.MeshStandardMaterial({ color: orange, transparent: true, opacity: 1 });
+// orangeMat.castShadow = true;
+// orangeMat.receiveShadow = true;
+// orangeMat.roughness = 1;
 
 var white = new THREE.Color("hsl(30, 53%, 66%)");
-var whiteMat = new THREE.MeshLambertMaterial({ color: white, opacity: 0.85, shading: THREE.FlatShading });
+var whiteMat = new THREE.MeshStandardMaterial({ color: white });
 
 
 var blue = new THREE.Color("hsl(215, 73%, 55%)");
-var blueMat = new THREE.MeshLambertMaterial({ color: blue, opacity: 0.85, shading: THREE.FlatShading });
+var blueMat = new THREE.MeshStandardMaterial({ color: blue });
 
 var brown = new THREE.Color("hsl(29, 72%, 20%)");
-var brownMat = new THREE.MeshLambertMaterial({ color: brown, opacity: 0.85, shading: THREE.FlatShading });
+var brownMat = new THREE.MeshStandardMaterial({ color: brown });
 
 var black = new THREE.Color("hsl(29, 14%, 12%)");
-var blackMat = new THREE.MeshPhongMaterial({ color: black, opacity: 0.85, shading: THREE.FlatShading });
+var blackMat = new THREE.MeshStandardMaterial({ color: black });
 
 var green = new THREE.Color("hsl(113, 83%, 31%)");
-// var greenMat = new THREE.MeshLambertMaterial({ color: green, opacity: 0.85, shading: THREE.FlatShading });
+// var greenMat = new THREE.LambertMaterial({ color: green });
 
 
 
