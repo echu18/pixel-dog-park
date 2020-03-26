@@ -35,9 +35,9 @@ var HEIGHT,
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 
-camera.position.x = 500;
+camera.position.x = 10;
 camera.position.y = 100;
-camera.position.z = 0;
+camera.position.z = -500;
 
 var renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setClearColor('#e5e5e5');
@@ -115,7 +115,7 @@ Doge = function () {
     // Colors
     var orange = new THREE.Color("hsl(17, 80%, 60%)");
     // var orangeMat = new THREE.MeshLambertMaterial({ color: orange, wireframe: true, opacity: 0.85, shading: THREE.FlatShading });
-    var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 0.85, shading: THREE.FlatShading });
+    var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 0.95, shading: THREE.FlatShading });
 
     var white = new THREE.Color("hsl(17, 5%, 95%)");
     var whiteMat = new THREE.MeshLambertMaterial({ color: white, opacity: 0.85, shading: THREE.FlatShading });
@@ -126,12 +126,15 @@ Doge = function () {
     
     var brown = new THREE.Color("hsl(29, 72%, 20%)");
     var brownMat = new THREE.MeshLambertMaterial({ color: brown, opacity: 0.85, shading: THREE.FlatShading});
+    
+    var black = new THREE.Color("hsl(29, 14%, 12%)");
+    var blackMat = new THREE.MeshPhongMaterial({ color: black, opacity: 0.85, shading: THREE.FlatShading});
 
 
     // Face
     this.head = new THREE.Group();
     
-        var faceBackGeom = new THREE.BoxGeometry(70, 70, 55);
+        var faceBackGeom = new THREE.BoxGeometry(70, 70, 45);
         
         var faceBack = new THREE.Mesh(faceBackGeom, orangeMat);
             faceBack.position.x = 0;
@@ -159,20 +162,20 @@ Doge = function () {
 
 
 
-        var snoutBackGeom = new THREE.BoxGeometry(40, 35, 35);
+        var snoutBackGeom = new THREE.BoxGeometry(30, 30, 35);
 
         var snoutBack = new THREE.Mesh(snoutBackGeom, orangeMat);
         snoutBack.position.x = 0;
-        snoutBack.position.y = 60;
+        snoutBack.position.y = 59;
         snoutBack.position.z = -50;
 
 
 
 
-        var snoutFrontGeom = new THREE.BoxGeometry(25, 25, 45);
+        var snoutFrontGeom = new THREE.BoxGeometry(25, 25, 35);
         // var snoutFrontGeom = new THREE.CylinderGeometry(12, 20, 50);
 
-        var snoutFront = new THREE.Mesh(snoutFrontGeom, orangeMat);
+        var snoutFront = new THREE.Mesh(snoutFrontGeom, whiteMat);
         snoutFront.position.x = 0;
         snoutFront.position.y = 60;
         snoutFront.position.z = -65;
@@ -184,12 +187,12 @@ Doge = function () {
         var nose = new THREE.Mesh(noseGeom, brownMat);
         nose.position.x = 0;
         nose.position.y = 67;
-        nose.position.z = -90;
+        nose.position.z = -85;
 
 
 
     // Cheeks
-        var cheekGeom = new THREE.BoxGeometry(10, 45, 45);
+        var cheekGeom = new THREE.BoxGeometry(13, 45, 45);
 
             var leftCheek = new THREE.Mesh(cheekGeom, orangeMat);
             leftCheek.position.x = 40;
@@ -197,7 +200,7 @@ Doge = function () {
             leftCheek.position.z = -10;
 
 
-        var cheekGeom = new THREE.BoxGeometry(10, 45, 45);
+        var cheekGeom = new THREE.BoxGeometry(13, 45, 45);
 
             var rightCheek = new THREE.Mesh(cheekGeom, orangeMat);
             rightCheek.position.x = -40;
@@ -246,30 +249,61 @@ Doge = function () {
 
 
 
-    // this.head.position.z = 15;
-    // this.head.position.y = 10;
-    // this.head.position.x = 0;
+    
+        // var eyeGeom = new THREE.SphereGeometry(7, 7, 7);
+        // var roundEyeGeom = new THREE.SphereGeometry(5, 7, 7);
+        var squareEyeGeom = new THREE.BoxGeometry(7, 13, 5);
+        // var eyeGlareGeom = new THREE.BoxGeometry(5, 5, 5);
+        // var roundEyeGeom = new THREE.SphereGeometry(5, 5, 5);
+
+
+        var leftEye = new THREE.Mesh(squareEyeGeom, blackMat);
+            leftEye.position.x = 15;
+            leftEye.position.y = 80;
+            leftEye.position.z = -53;
+            // leftEye.rotation.z = -55;
+            // leftEye.scale.setX(1.3)
+
+        // var leftEyeGlare = new THREE.Mesh(eyeGlareGeom, blackMat);
+        //     leftEyeGlare.position.x = 15;
+        //     leftEyeGlare.position.y = 77;
+        //     leftEyeGlare.position.z = -56;
+            // leftEyeGlare.rotation.z = -70;
+        // var leftEyeGlare = new THREE.Mesh(eyeGlareGeom, blackMat);
+        //     leftEyeGlare.position.x = 15;
+        //     leftEyeGlare.position.y = 80;
+        //     leftEyeGlare.position.z = -56;
+        //     // leftEyeGlare.rotation.z = -70;
+
+        var rightEye = new THREE.Mesh(squareEyeGeom, blackMat);
+            rightEye.position.x = -15;
+            rightEye.position.y = 80;
+            rightEye.position.z = -53;
+            // rightEye.rotation.z = -55;
+            // rightEye.scale.setX(1.3)
 
 
 
-    // 
-    var eyeGeom
-    var snoutFrontGeom
+
 
 
     
-    this.head.add(faceBack)
-    this.head.add(faceMid1)
-    // this.head.add(faceFront)
-    this.head.add(snoutBack)
-    this.head.add(snoutFront)
-    this.head.add(nose)
     this.head.add(leftCheek)
     this.head.add(rightCheek)
     this.head.add(leftEar)
     this.head.add(leftInnerEar)
     this.head.add(rightEar)
     this.head.add(rightInnerEar)
+    this.head.add(faceBack)
+    this.head.add(faceMid1)
+    // this.head.add(faceFront)
+    this.head.add(leftEye)
+    this.head.add(rightEye)
+    // this.head.add(leftEyeGlare)
+    // this.head.add(rightEyeGlare)
+    this.head.add(snoutBack)
+    this.head.add(snoutFront)
+    this.head.add(nose)
 
 
     this.head.position.y = 15
@@ -306,11 +340,11 @@ Doge = function () {
         bodyFront.position.z = 10;
     
     
-    var bodyMidGeom = new THREE.BoxGeometry(70,100,60);
+    var bodyMidGeom = new THREE.BoxGeometry(70,80,60);
     var bodyMid = new THREE.Mesh(bodyMidGeom, orangeMat);
         
         bodyMid.position.x = 0;
-        bodyMid.position.y = -10;
+        bodyMid.position.y = 10;
         bodyMid.position.z = 40;
         
 
@@ -331,11 +365,11 @@ Doge = function () {
         bodyBum.position.z = 95;
 
    
-    var bellyGeom = new THREE.BoxGeometry(35, 50, 2);
+    var bellyGeom = new THREE.BoxGeometry(35, 20, 2);
     var belly = new THREE.Mesh(bellyGeom, whiteMat)
 
     belly.position.x = 0;
-    belly.position.y = -35;
+    belly.position.y = -20;
     belly.position.z = 10;
 
  
@@ -387,7 +421,7 @@ Doge = function () {
     // Front Legs
 
     var frontLegGeom = new THREE.BoxGeometry(20, 80, 20);
-    var frontFootGeom = new THREE.BoxGeometry(20, 20, 40);
+    var frontFootGeom = new THREE.BoxGeometry(20, 20, 30);
         
     this.leftFrontLeg = new THREE.Group();
         var frontLegLeft = new THREE.Mesh(frontLegGeom, orangeMat);
@@ -399,7 +433,7 @@ Doge = function () {
         var frontFootLeft = new THREE.Mesh(frontFootGeom, whiteMat);
             frontFootLeft.position.x = 35;
             frontFootLeft.position.y = -50;
-            frontFootLeft.position.z = -10;
+            frontFootLeft.position.z = -5;
 
 
     this.leftFrontLeg.add(frontLegLeft);
@@ -417,7 +451,7 @@ Doge = function () {
         var frontFootRight = new THREE.Mesh(frontFootGeom, whiteMat);
             frontFootRight.position.x = -35;
             frontFootRight.position.y = -50;
-            frontFootRight.position.z = -10;
+            frontFootRight.position.z = -5;
 
     this.rightFrontLeg.add(frontLegRight);
     this.rightFrontLeg.add(frontFootRight);
