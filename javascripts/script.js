@@ -115,7 +115,7 @@ Doge = function () {
     // Colors
     var orange = new THREE.Color("hsl(17, 80%, 60%)");
     // var orangeMat = new THREE.MeshLambertMaterial({ color: orange, wireframe: true, opacity: 0.85, shading: THREE.FlatShading });
-    var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 0.95, shading: THREE.FlatShading });
+    var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 1, shading: THREE.FlatShading });
 
     var white = new THREE.Color("hsl(17, 5%, 95%)");
     var whiteMat = new THREE.MeshLambertMaterial({ color: white, opacity: 0.85, shading: THREE.FlatShading });
@@ -131,25 +131,29 @@ Doge = function () {
     var blackMat = new THREE.MeshPhongMaterial({ color: black, opacity: 0.85, shading: THREE.FlatShading});
 
 
-    // Face
+    // Head
     this.head = new THREE.Group();
     
-        var faceBackGeom = new THREE.BoxGeometry(70, 70, 45);
-        
-        var faceBack = new THREE.Mesh(faceBackGeom, orangeMat);
-            faceBack.position.x = 0;
-            faceBack.position.y = 70;
-            faceBack.position.z = -10;
+        var headBackGeom = new THREE.BoxGeometry(70, 70, 50);
+        var headBack = new THREE.Mesh(headBackGeom, orangeMat);
+            headBack.position.x = 0;
+            headBack.position.y = 60;
+            headBack.position.z = 0;
+
+
+        var headTopGeom = new THREE.BoxGeometry(20, 70, 50);
+        var headTop = new THREE.Mesh(headTopGeom, whiteMat);
+            headTop.position.x = 0;
+            headTop.position.y = 62;
+            headTop.position.z = -30;
 
 
 
-
-        var faceMid1Geom = new THREE.BoxGeometry(60, 50, 45);
-
-        var faceMid1 = new THREE.Mesh(faceMid1Geom, orangeMat);
-        faceMid1.position.x = 0;
-        faceMid1.position.y = 70;
-        faceMid1.position.z = -30;
+        var headMidGeom = new THREE.BoxGeometry(60, 50, 45);
+        var headMid = new THREE.Mesh(headMidGeom, orangeMat);
+            headMid.position.x = 0;
+            headMid.position.y = 70;
+            headMid.position.z = -30;
         
 
        
@@ -164,7 +168,7 @@ Doge = function () {
 
         var snoutBackGeom = new THREE.BoxGeometry(30, 30, 35);
 
-        var snoutBack = new THREE.Mesh(snoutBackGeom, orangeMat);
+        var snoutBack = new THREE.Mesh(snoutBackGeom, whiteMat);
         snoutBack.position.x = 0;
         snoutBack.position.y = 59;
         snoutBack.position.z = -50;
@@ -192,7 +196,7 @@ Doge = function () {
 
 
     // Cheeks
-        var cheekGeom = new THREE.BoxGeometry(13, 45, 45);
+        var cheekGeom = new THREE.BoxGeometry(13, 35, 45);
 
             var leftCheek = new THREE.Mesh(cheekGeom, orangeMat);
             leftCheek.position.x = 40;
@@ -200,7 +204,7 @@ Doge = function () {
             leftCheek.position.z = -10;
 
 
-        var cheekGeom = new THREE.BoxGeometry(13, 45, 45);
+        var cheekGeom = new THREE.BoxGeometry(13, 35, 45);
 
             var rightCheek = new THREE.Mesh(cheekGeom, orangeMat);
             rightCheek.position.x = -40;
@@ -208,10 +212,13 @@ Doge = function () {
             rightCheek.position.z = -10;
 
 
-
+        this.head.add(headBack)
+        this.head.add(headTop)
+        this.head.add(headMid)
 
 
     // Ears
+    this.ears = new THREE.Group();
         var earGeom = new THREE.BoxGeometry(20, 30, 20);
         var innerEarGeom = new THREE.BoxGeometry(10,15,2);
 
@@ -246,8 +253,12 @@ Doge = function () {
             rightInnerEar.position.y = 115;
             rightInnerEar.position.z = -30;
 
+        this.ears.add(leftEar);
+        this.ears.add(leftInnerEar);
+        this.ears.add(rightEar);
+        this.ears.add(rightInnerEar);
 
-
+        this.ears.position.y = -5;
 
     
         // var eyeGeom = new THREE.SphereGeometry(7, 7, 7);
@@ -285,17 +296,36 @@ Doge = function () {
 
 
 
+    // Mouth 
+    this.mouth = new THREE.Group();
+        var mouthGeom = new THREE.BoxGeometry(10, 10, 5);
+
+        var leftMouth = new THREE.Mesh(mouthGeom, blueMat);
+
+        leftMouth.position.x = 0;
+        leftMouth.position.y = 50;
+        leftMouth.position.z = -60;
 
 
-    
+
+    this.mouth.add(leftMouth);
+
+
+
+
+
+
+    // this.head.add(mouth)
     this.head.add(leftCheek)
     this.head.add(rightCheek)
-    this.head.add(leftEar)
-    this.head.add(leftInnerEar)
-    this.head.add(rightEar)
-    this.head.add(rightInnerEar)
-    this.head.add(faceBack)
-    this.head.add(faceMid1)
+    // this.head.add(leftEar)
+    // this.head.add(leftInnerEar)
+    // this.head.add(rightEar)
+    // this.head.add(rightInnerEar)
+    this.head.add(this.ears)
+    this.head.add(this.head)
+    // this.head.add(faceBack)
+    // this.head.add(faceMid1)
     // this.head.add(faceFront)
     this.head.add(leftEye)
     this.head.add(rightEye)
@@ -304,6 +334,7 @@ Doge = function () {
     this.head.add(snoutBack)
     this.head.add(snoutFront)
     this.head.add(nose)
+    this.head.add(this.mouth)
 
 
     this.head.position.y = 15
@@ -321,58 +352,78 @@ Doge = function () {
 
     // Body
     this.body = new THREE.Group();
-
+    this.torso = new THREE.Group();
 
     // Main body
-    var chestGeom = new THREE.BoxGeometry(45, 50, 2);
-    var chest = new THREE.Mesh(chestGeom, whiteMat)
+    var bodyChestGeom = new THREE.BoxGeometry(45, 40, 5);
+    var bodyChest = new THREE.Mesh(bodyChestGeom, whiteMat)
+        bodyChest.position.x = 0;
+        bodyChest.position.y = 23;
+        bodyChest.position.z = -25;
 
-        chest.position.x = 0;
-        chest.position.y = 23;
-        chest.position.z = -25;
 
-
-    var bodyFrontGeom = new THREE.BoxGeometry(60, 85, 70);
+    var bodyFrontGeom = new THREE.BoxGeometry(60, 75, 70);
     var bodyFront = new THREE.Mesh(bodyFrontGeom, orangeMat)
-
         bodyFront.position.x = 0;
         bodyFront.position.y = 35;
         bodyFront.position.z = 10;
     
     
-    var bodyMidGeom = new THREE.BoxGeometry(70,80,60);
+    var bodyMidGeom = new THREE.BoxGeometry(75,55,75);
     var bodyMid = new THREE.Mesh(bodyMidGeom, orangeMat);
-        
         bodyMid.position.x = 0;
-        bodyMid.position.y = 10;
-        bodyMid.position.z = 40;
+        bodyMid.position.y = 12;
+        bodyMid.position.z = 35;
         
 
 
     var bodyBackGeom = new THREE.BoxGeometry(80,80,60);
     var bodyBack = new THREE.Mesh(bodyBackGeom, orangeMat);
-    
         bodyBack.position.x = 0;
         bodyBack.position.y = -20;
         bodyBack.position.z = 60;
 
 
-    var bodyBumGeom = new THREE.BoxGeometry(70,50,20);
+    var bodyBumGeom = new THREE.BoxGeometry(70,60,20);
     var bodyBum = new THREE.Mesh(bodyBumGeom, orangeMat);
-    
         bodyBum.position.x = 0;
-        bodyBum.position.y = -35;
+        bodyBum.position.y = -30;
         bodyBum.position.z = 95;
 
-   
+
+    var bumPatternGeom = new THREE.BoxGeometry(40,45,13);
+    var bumPattern = new THREE.Mesh(bumPatternGeom, whiteMat);
+        bumPattern.position.x = 0;
+        bumPattern.position.y = -38;
+        bumPattern.position.z = 110;
+
+    var tailGeom = new THREE.BoxGeometry(15, 20, 20);  
+    var tail = new THREE.Mesh(tailGeom, orangeMat);
+        tail.position.x = 0;
+        tail.position.y = -22;
+        tail.position.z = 110;
+
+
     var bellyGeom = new THREE.BoxGeometry(35, 20, 2);
     var belly = new THREE.Mesh(bellyGeom, whiteMat)
+        belly.position.x = 0;
+        belly.position.y = -5;
+        belly.position.z = -5;
 
-    belly.position.x = 0;
-    belly.position.y = -20;
-    belly.position.z = 10;
 
- 
+    this.torso.add(bodyChest);
+    this.torso.add(bodyFront);
+    this.torso.add(bodyMid);
+    this.torso.add(bodyBack);
+    this.torso.add(belly);
+    this.torso.add(bodyBum);
+    this.torso.add(bumPattern);
+    this.torso.add(tail);
+
+
+
+
+
 
     // Legs
     var hindLegGeom = new THREE.BoxGeometry(20, 50, 45);
@@ -468,12 +519,9 @@ Doge = function () {
 
     
     // Add parts to body
-    this.body.add(chest);
-    this.body.add(bodyFront);
-    this.body.add(bodyMid);
-    this.body.add(bodyBack);
-    this.body.add(bodyBum);
-    this.body.add(belly);
+
+
+    this.body.add(this.torso)
     this.body.add(this.leftHindLeg);
     this.body.add(this.rightHindLeg);
     this.body.add(this.leftFrontLeg);
