@@ -61,12 +61,15 @@ function createLights() {
     // var backLight = new THREE.PointLight(0xFFFFFF, 1, 1000)
     // backLight.position.set(0, 100, 1000)
     
-    // var frontLight = new THREE.PointLight(0xFFFFFF, 1, 1000)
-    // frontLight.position.set(0, 200, 100)
+    // var frontLight = new THREE.PointLight(0xFFFFFF, 1, 500)
+    // frontLight.position.set(50, 5, 10)
     
-    // var leftLight = new THREE.DirectionalLight(0xFFFFFF, 1, 1000)
-    // leftLight.position.set(100,0,100)
-    
+    // var backLight = new THREE.DirectionalLight(0xFFFFFF, 0.1, 1000)
+    // backLight.position.set(10,20,10)
+
+    var frontLight = new THREE.DirectionalLight(0xFFFFFF, 0.1, 1000)
+    frontLight.position.set(0,0,-15)
+   
     
     // var ambientLight = new THREE.AmbientLight(0x404040);
     
@@ -75,8 +78,8 @@ function createLights() {
     scene.add(light);
 
     // scene.add(backLight);
-    // scene.add(frontLight);
-    // scene.add(leftLight);
+    // scene.add(backLight);
+    scene.add(frontLight);
     
     // scene.add(ambientLight)
 ;}
@@ -94,12 +97,65 @@ var mouse = new THREE.Vector2();
 
 
 
+// Colors
+var orange = new THREE.Color("hsl(17, 80%, 60%)");
+// var orangeMat = new THREE.MeshLambertMaterial({ color: orange, wireframe: true, opacity: 0.85, shading: THREE.FlatShading });
+var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 1, shading: THREE.FlatShading });
+
+var white = new THREE.Color("hsl(17, 5%, 95%)");
+var whiteMat = new THREE.MeshLambertMaterial({ color: white, opacity: 0.85, shading: THREE.FlatShading });
+
+
+var blue = new THREE.Color("hsl(215, 73%, 55%)");
+var blueMat = new THREE.MeshLambertMaterial({ color: blue, opacity: 0.85, shading: THREE.FlatShading });
+
+var brown = new THREE.Color("hsl(29, 72%, 20%)");
+var brownMat = new THREE.MeshLambertMaterial({ color: brown, opacity: 0.85, shading: THREE.FlatShading });
+
+var black = new THREE.Color("hsl(29, 14%, 12%)");
+var blackMat = new THREE.MeshPhongMaterial({ color: black, opacity: 0.85, shading: THREE.FlatShading });
+
+var green = new THREE.Color("hsl(113, 83%, 31%)");
+// var greenMat = new THREE.MeshLambertMaterial({ color: green, opacity: 0.85, shading: THREE.FlatShading });
 
 
 
-function createDoge() {
-    doge = new Doge();
-    scene.add(doge);
+
+
+
+
+
+var groundGeom = new THREE.PlaneBufferGeometry(500, 500, 8, 8);
+var groundMat = new THREE.MeshBasicMaterial({ color: green, side: THREE.DoubleSide });
+var plane = new THREE.Mesh(groundGeom, groundMat);
+plane.rotateX(- Math.PI / 2);
+plane.position.y = -60;
+
+scene.add(plane);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createDog() {
+    dog = new Dog();
+    scene.add(dog);
 }
 
 
@@ -109,27 +165,10 @@ function createDoge() {
 
 
 
-// Doge
+// Dog
 
-Doge = function () {
-    // Colors
-    var orange = new THREE.Color("hsl(17, 80%, 60%)");
-    // var orangeMat = new THREE.MeshLambertMaterial({ color: orange, wireframe: true, opacity: 0.85, shading: THREE.FlatShading });
-    var orangeMat = new THREE.MeshLambertMaterial({ color: orange, transparent: true, opacity: 1, shading: THREE.FlatShading });
-
-    var white = new THREE.Color("hsl(17, 5%, 95%)");
-    var whiteMat = new THREE.MeshLambertMaterial({ color: white, opacity: 0.85, shading: THREE.FlatShading });
-
-
-    var blue = new THREE.Color("hsl(215, 73%, 55%)");
-    var blueMat = new THREE.MeshLambertMaterial({ color: blue, opacity: 0.85, shading: THREE.FlatShading});
+Dog = function () {
     
-    var brown = new THREE.Color("hsl(29, 72%, 20%)");
-    var brownMat = new THREE.MeshLambertMaterial({ color: brown, opacity: 0.85, shading: THREE.FlatShading});
-    
-    var black = new THREE.Color("hsl(29, 14%, 12%)");
-    var blackMat = new THREE.MeshPhongMaterial({ color: black, opacity: 0.85, shading: THREE.FlatShading});
-
 
     // Head
     this.head = new THREE.Group();
@@ -219,6 +258,8 @@ Doge = function () {
 
     // Ears
     this.ears = new THREE.Group();
+    this.leftEar = new THREE.Group();
+    
         var earGeom = new THREE.BoxGeometry(20, 30, 20);
         var innerEarGeom = new THREE.BoxGeometry(10,15,2);
 
@@ -229,15 +270,19 @@ Doge = function () {
             leftEar.position.z = -20;
 
             // leftEar.rotation.y = -10;
-            // leftEar.rotation.z = -9;
+            // leftEar.rotation.z = 9;
 
         var leftInnerEar = new THREE.Mesh(innerEarGeom, whiteMat);
             leftInnerEar.position.x = 25;
             leftInnerEar.position.y = 115;
             leftInnerEar.position.z = -30;
 
+            this.leftEar.add(leftEar);
+            this.leftEar.add(leftInnerEar);
+            this.leftEar.rotation.y = 0.2;
 
 
+    this.rightEar = new THREE.Group();
 
         var rightEar = new THREE.Mesh(earGeom, orangeMat);
 
@@ -253,12 +298,17 @@ Doge = function () {
             rightInnerEar.position.y = 115;
             rightInnerEar.position.z = -30;
 
-        this.ears.add(leftEar);
-        this.ears.add(leftInnerEar);
-        this.ears.add(rightEar);
-        this.ears.add(rightInnerEar);
+            this.rightEar.add(rightEar);
+            this.rightEar.add(rightInnerEar);
+            this.rightEar.rotation.y = -0.2;
 
-        this.ears.position.y = -5;
+
+
+        this.ears.add(this.leftEar);
+        this.ears.add(this.rightEar);
+
+        this.ears.position.y = -8;
+        this.ears.position.z = -10;
 
     
         // var eyeGeom = new THREE.SphereGeometry(7, 7, 7);
@@ -557,7 +607,7 @@ Doge = function () {
 // Rendering
 
 createLights();
-createDoge();
+createDog();
 
 
 
