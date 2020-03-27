@@ -478,9 +478,10 @@ Dog = function () {
 
             this.leftEar.add(leftEar);
             this.leftEar.add(leftInnerEar);
-            this.leftEar.position.x = -15;
-            this.leftEar.rotation.y = -0.1;
-            this.leftEar.rotation.z = -0.10;
+            this.leftEar.position.x = 0;
+            // this.leftEar.position.x = -15;
+            // this.leftEar.rotation.y = -0.1;
+            // this.leftEar.rotation.z = -0.10;
 
 
     this.rightEar = new THREE.Group();
@@ -500,17 +501,18 @@ Dog = function () {
 
             this.rightEar.add(rightEar);
             this.rightEar.add(rightInnerEar);
-            this.rightEar.position.x = 15;
-            this.rightEar.rotation.y = 0.1;
-            this.rightEar.rotation.z = 0.10;
+            this.rightEar.position.x = 0;
+            // this.rightEar.position.x = 15;
+            // this.rightEar.rotation.y = 0.1;
+            // this.rightEar.rotation.z = 0.10;
 
 
 
         this.ears.add(this.leftEar);
         this.ears.add(this.rightEar);
 
-        this.ears.position.y = -8;
-        this.ears.position.z = 10;
+        this.ears.position.y = -10;
+        this.ears.position.z = 13;
 
 
 
