@@ -142,8 +142,8 @@ function trackEyes () {
     // var targetX = normalize(mousePos.x, -1, 1, -100, 100);
     // var targetY = normalize(mousePos.y, -1, 1, 25, 175);
 
-    yDist = ((mousePos.y * 100) - (dog.eyeGlares.position.y))
-    xDist = -((mousePos.x * 100) - (dog.eyeGlares.position.x))
+    yDist = ((mousePos.y * 100) / 1000 - (dog.eyeGlares.position.y))
+    xDist = -((mousePos.x * 100) / 1000 - (dog.eyeGlares.position.x))
   
     // this.updateBody(10);
     // debugger
@@ -151,8 +151,7 @@ function trackEyes () {
     // dog.eyes.position.y += -(mousePos.y * 100) / 10;
     // dog.eyeGlares.position.x -= ((mousePos.x * 100) % 50);
     // dog.eyeGlares.position.x += ((mousePos.x * 100) / 10) % 10;
-    console.log("X:" + mousePos.x)
-    console.log("Y:" + mousePos.y)
+
     if (dog.eyeGlares.position.y + yDist >= -1) {
         dog.eyeGlares.position.y = -1;
     } else if (dog.eyeGlares.position.y + yDist < -5){ 
