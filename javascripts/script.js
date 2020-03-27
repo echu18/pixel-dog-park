@@ -109,13 +109,13 @@ var mousePos = {x:0, y:0}
 
 
 
-function handleMouseMove(event){
-    var tx=-1 + (event.clientX / WIDTH) * 2;
-    var ty= 1 - (event.clientY / HEIGHT) * 2;
-    mousePos = {x:tx, y:ty}
-}
+// function handleMouseMove(event){
+//     var tx=-1 + (event.clientX / WIDTH) * 2;
+//     var ty= 1 - (event.clientY / HEIGHT) * 2;
+//     mousePos = {x:tx, y:ty}
+// }
 
-document.addEventListener('mousemove', handleMouseMove, false);
+// document.addEventListener('mousemove', handleMouseMove, false);
 
 
 
@@ -133,15 +133,48 @@ Dog.prototype.track = function(xTarget, yTarget){
 
 
 
-
 var render = function () {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
-    // Dog.head.position.x += 3;
+}
+
+controls = new THREE.OrbitControls(camera, renderer.domElement)
+
+
+
+
+// now handle the mousemove event
+
+// function handleMouseMove(e) {
+//     var tx = -1 + (e.clientX / WIDTH) * 2;
+//     var ty = 1 - (e.clientY / HEIGHT) * 2;
+//     mousePos = { x: tx, y: ty };
+// }
+
+// Dog.prototype.track = function() {
+//     this.eyes.position.x = normalize(mousePos.x, -1, 1, -100, 100);
+//     this.eyes.position.y = normalize(mousePos.y, -1, 1, 25, 175);
+// }
+
+function loop() {
+    render();
+    // dog.track();
 }
 
 
-controls = new THREE.OrbitControls(camera, renderer.domElement)
-render();
 
 
+loop();
+
+
+
+
+
+// function normalize(v, vmin, vmax, tmin, tmax) {
+//     var nv = Math.max(Math.min(v, vmax), vmin);
+//     var dv = vmax - vmin;
+//     var pc = (nv - vmin) / dv;
+//     var dt = tmax - tmin;
+//     var tv = tmin + (pc * dt);
+//     return tv;
+// }

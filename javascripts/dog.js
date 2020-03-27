@@ -400,8 +400,8 @@ Dog = function () {
 
     var leftEyeBrow = new THREE.Mesh(eyeBrowGeom, whiteMat);
     leftEyeBrow.position.x = 15;
-    leftEyeBrow.position.y = 90;
-    leftEyeBrow.position.z = -53;
+    leftEyeBrow.position.y = 88;
+    leftEyeBrow.position.z = -55;
     // leftEyeBrow.rotation.z = -53;
     // leftEyeBrow.rotation.z = 3.2;
 
@@ -422,8 +422,8 @@ Dog = function () {
 
     var rightEyeBrow = new THREE.Mesh(eyeBrowGeom, whiteMat);
     rightEyeBrow.position.x = -15;
-    rightEyeBrow.position.y = 90;
-    rightEyeBrow.position.z = -53;
+    rightEyeBrow.position.y = 88;
+    rightEyeBrow.position.z = -55;
     // rightEyeBrow.rotation.z = 53;
     // rightEyeBrow.rotation.z = -3.2;
 
@@ -432,21 +432,21 @@ Dog = function () {
     this.eyes.add(rightEye);
     this.eyes.add(leftEyeGlare)
     this.eyes.add(rightEyeGlare)
-    this.eyes.add(leftEyeBrow);
-    this.eyes.add(rightEyeBrow);
     this.eyes.position.z = -2
-
-
-
-
-
-
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    this.head.add(leftEyeBrow);
+    this.head.add(rightEyeBrow);
 
     this.head.add(this.ears)
     this.head.add(this.head)
