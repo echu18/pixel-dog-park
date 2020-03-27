@@ -23,6 +23,7 @@ var black = new THREE.Color("hsl(29, 14%, 12%)");
 var blackMat = new THREE.MeshStandardMaterial({ color: black });
 
 var green = new THREE.Color("hsl(113, 83%, 31%)");
+var darkGreen = new THREE.Color("hsl(113, 77%, 26%)");
 // var greenMat = new THREE.LambertMaterial({ color: green });
 
 
@@ -31,18 +32,27 @@ var green = new THREE.Color("hsl(113, 83%, 31%)");
 
 
 
-function createGrass() {
+function createGrassPlane() {
     var groundGeom = new THREE.PlaneBufferGeometry(500, 500, 8, 8);
     var groundMat = new THREE.MeshBasicMaterial({ color: green, side: THREE.DoubleSide });
-    var grass = new THREE.Mesh(groundGeom, groundMat);
-    grass.rotateX(- Math.PI / 2);
-    grass.position.y = -60;
+    var grassPlane = new THREE.Mesh(groundGeom, groundMat);
+    grassPlane.rotateX(- Math.PI / 2);
+    grassPlane.position.y = -60;
 
-    scene.add(grass);
+    scene.add(grassPlane);
+    
+    var grassSmallGeom = new THREE.BoxGeometry(15, 15, 15);
+    var grassMat = new THREE.MeshLambertMaterial({ color: darkGreen })
+    
+    for (var i = 0; i < 100; i++) {  // Loops thru and makes a new mesh object each iteration
+        var grassSmall = new THREE.Mesh(grassSmallGeom, grassMat);  // Randomize positions with math.random
+        grassSmall.position.x = (Math.random() - 0.5) * 500;
+        // grassSmall.position.y = (Math.random() - 0.5) * 1;
+        grassSmall.position.y = -50;
+        grassSmall.position.z = (Math.random() - 0.5) * 400;
+        scene.add(grassSmall);
+    }
 }
-
-
-
 
 
 
