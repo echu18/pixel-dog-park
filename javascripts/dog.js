@@ -30,8 +30,6 @@ var darkGreen = new THREE.Color("hsl(113, 77%, 26%)");
 
 
 
-
-
 function createGrassPlane() {
     var groundGeom = new THREE.PlaneBufferGeometry(500, 500, 8, 8);
     var groundMat = new THREE.MeshBasicMaterial({ color: green, side: THREE.DoubleSide });
@@ -84,8 +82,6 @@ function createDog() {
 // Dog
 
 Dog = function () {
-
-
     // Head
     this.head = new THREE.Group();
 
@@ -374,68 +370,73 @@ Dog = function () {
 
     // var eyeGeom = new THREE.SphereGeometry(7, 7, 7);
     // var roundEyeGeom = new THREE.SphereGeometry(5, 7, 7);
+    // var roundEyeGeom = new THREE.SphereGeometry(5, 5, 5);
     var squareEyeGeom = new THREE.BoxGeometry(8, 8, 5);
     var eyeGlareGeom = new THREE.BoxGeometry(3, 3, 5);
-    // var roundEyeGeom = new THREE.SphereGeometry(5, 5, 5);
     var eyeBrowGeom = new THREE.BoxGeometry(12, 5, 5);
 
-
+    
     var leftEye = new THREE.Mesh(squareEyeGeom, blackMat);
     leftEye.position.x = 15;
     leftEye.position.y = 77;
     leftEye.position.z = -53;
-
+    
     var leftEyeGlare = new THREE.Mesh(eyeGlareGeom, whiteMat);
     leftEyeGlare.position.x = 18;
     leftEyeGlare.position.y = 80;
     leftEyeGlare.position.z = -54;
     // leftEyeGlare.rotation.z = -70;
-
+    
     // var leftEyeGlare = new THREE.Mesh(eyeGlareGeom, blackMat);
     //     leftEyeGlare.position.x = 15;
     //     leftEyeGlare.position.y = 80;
     //     leftEyeGlare.position.z = -56;
     //     // leftEyeGlare.rotation.z = -70;
-
-
+    
+    
     var leftEyeBrow = new THREE.Mesh(eyeBrowGeom, whiteMat);
     leftEyeBrow.position.x = 15;
     leftEyeBrow.position.y = 88;
     leftEyeBrow.position.z = -55;
     // leftEyeBrow.rotation.z = -53;
     // leftEyeBrow.rotation.z = 3.2;
-
-
+    
+    
     var rightEye = new THREE.Mesh(squareEyeGeom, blackMat);
     rightEye.position.x = -15;
     rightEye.position.y = 77;
     rightEye.position.z = -53;
     // rightEye.rotation.z = -55;
     // rightEye.scale.setX(1.3)
-
+    
     var rightEyeGlare = new THREE.Mesh(eyeGlareGeom, whiteMat);
     rightEyeGlare.position.x = -12;
     rightEyeGlare.position.y = 80;
     rightEyeGlare.position.z = -54;
     // leftEyeGlare.rotation.z = -70;
-
-
+    
+    
     var rightEyeBrow = new THREE.Mesh(eyeBrowGeom, whiteMat);
     rightEyeBrow.position.x = -15;
     rightEyeBrow.position.y = 88;
     rightEyeBrow.position.z = -55;
     // rightEyeBrow.rotation.z = 53;
     // rightEyeBrow.rotation.z = -3.2;
-
-
+    
+    this.eyeGlares = new THREE.Group();
+    this.eyeGlares.add(leftEyeGlare)
+    this.eyeGlares.add(rightEyeGlare)
+    
     this.eyes.add(leftEye);
     this.eyes.add(rightEye);
-    this.eyes.add(leftEyeGlare)
-    this.eyes.add(rightEyeGlare)
+    this.eyes.add(this.eyeGlares)
     this.eyes.position.z = -2
     
     
     
+    // var box = new THREE.Box3();
+    // leftEye.geometry.computeBoundingBox();
+    // box.copy(leftEye.geometry.boundingBox).applyMatrix4(leftEye.matrixWorld);
     
     
     
@@ -651,26 +652,18 @@ Dog = function () {
     this.rightFrontLeg.add(frontFootRight);
 
 
-
-
     this.leftFrontLeg.position.z = -10
     this.rightFrontLeg.position.z = -10
 
 
 
 
-
-
     // Add parts to body
-
-
     this.body.add(this.torso)
     this.body.add(this.leftHindLeg);
     this.body.add(this.rightHindLeg);
     this.body.add(this.leftFrontLeg);
     this.body.add(this.rightFrontLeg);
-
-
 
 
 
