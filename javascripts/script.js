@@ -1,8 +1,6 @@
 HEIGHT = window.innerHeight;
 WIDTH = window.innerWidth;
 
-
-
 // var scene,
 //     camera,
 //     controls,
@@ -109,8 +107,34 @@ document.addEventListener('mouseup', handleMouseUp, false);
 
 
 controls = new THREE.OrbitControls(camera, renderer.domElement)
-controls.enabled = false;
-controls.enableRotate = false;
+
+
+// User Control HUD
+
+controls.enabled = true;
+// document.getElementById('toggle-controls').addEventListener("click", toggleControls());
+
+let btn = document.getElementById('toggle-controls');
+
+btn.addEventListener('click', ()=> toggleControls())
+function toggleControls(){
+    if (controls.enabled === true ) {
+        controls.enabled = false;
+    } else {
+        controls.enabled = true
+    }
+}
+
+
+// var enableRotate = document.getElementById('enable-rotate');
+// enableRotate.onclick = function () {
+//     if (controls.enableRotate) {
+//         controls.enableRotate = false;
+//     } else {
+//         controls.enableRotate = true
+//     }
+// }
+
 controls.keys = {
     LEFT: 37, //left arrow
     UP: 38, // up arrow
@@ -166,11 +190,8 @@ Dog.prototype.petHead = function() {
     yDist = ((mousePos.y * 100) - (this.head.position.y) / 10)
     xDist = -((mousePos.x * 10) - (this.head.position.x) / 10)
 
-
     var xPos = mousePos.x * 100
     var yPos = mousePos.y * 100
-    // if ((yPos <= 65 && yPos >= 40) && (xPos <= 50 && yPos >= -50 )) {
-
 
     if ((yPos <= 65 && yPos >= 40) && isPetting ) {
         
@@ -183,45 +204,14 @@ Dog.prototype.petHead = function() {
             this.head.rotation.z = -0.1;
         }
     }
-
-        // && mousePos.x <= this.head.position.x + 3 
-
-    // if (mousePos.x - 3 <= this.head.position.x + 3 && mousePos.y - 3 >= this.head.position.x + 3) {
-    //     if (this.head.position.y + yDist >= -1) {
-    //         this.head.position.y = -1;
-    //     } else if (this.head.position.y + yDist < -5) {
-    //         this.head.position.y = -5;
-    //     } else if (yDist > 0) {
-    //         this.head.position.y += yDist;
-    //     } else {
-    //         this.head.position.y -= yDist;
-    //     }
-
-    //     // if (this.head.position.x + xDist >= 0) {
-    //     //     this.head.position.x = 0;
-    //     // } else if (this.head.position.x + xDist < -5) {
-    //     //     this.head.position.x = -5;
-    //     // } else if (xDist > 0) {
-    //     //     this.head.position.x += xDist;
-    //     // } else {
-    //     //     this.head.position.x -= xDist;
-    //     // }
-    // }
-}
-
-Dog.prototype.idleAnim = function() {
-    this.head.rotation.x = 0;
-    this.head.rotation.z = 0;
-    this.head.position.x = 0;
-    this.head.position.y = 15;
-    dog.trackEyes();
 }
 
 
-Dog.prototype.trackEyes = function() {
+
+Dog.prototype.trackCursor = function() {
     yDist = ((mousePos.y * 100) - (this.eyeGlares.position.y)/100)
     xDist = -((mousePos.x * 100) - (this.eyeGlares.position.x)/100)
-  
+    
     if (this.eyeGlares.position.y + yDist >= -1) {
         this.eyeGlares.position.y = -1;
     } else if (this.eyeGlares.position.y + yDist < -5){ 
@@ -231,7 +221,7 @@ Dog.prototype.trackEyes = function() {
     } else {
         this.eyeGlares.position.y -= yDist;
     }
-
+    
     if (this.eyeGlares.position.x + xDist >= 0) {
         this.eyeGlares.position.x = 0;
     } else if (this.eyeGlares.position.x + xDist < -5){ 
@@ -244,6 +234,15 @@ Dog.prototype.trackEyes = function() {
 }
 
 
+Dog.prototype.idleAnim = function() {
+    this.head.rotation.x = 0;
+    this.head.rotation.z = 0;
+    this.head.position.x = 0;
+    this.head.position.y = 15;
+
+    this.eyeGlares.position = (0, -1, 0);
+    dog.trackCursor();
+}
 
 
 
@@ -267,7 +266,7 @@ function loop() {
         dog.idleAnim();
     }
 
-
+    console.log(controls.enabled);
 
 
 
@@ -307,3 +306,28 @@ function normalize(v, vmin, vmax, tmin, tmax) {
     // dog.head.rotation.x += (mousePos.x * 100) / 10;
     // dog.head.position.y += (normalize(mousePos.y, -140, 260, 20, 50) - dog.head.position.y ) / 50;
     // dog.head.rotation.z += normalize(mousePos.x, -200, 200, -Math.PI - .3, -Math.PI + .3);
+
+
+        // && mousePos.x <= this.head.position.x + 3 
+
+    // if (mousePos.x - 3 <= this.head.position.x + 3 && mousePos.y - 3 >= this.head.position.x + 3) {
+    //     if (this.head.position.y + yDist >= -1) {
+    //         this.head.position.y = -1;
+    //     } else if (this.head.position.y + yDist < -5) {
+    //         this.head.position.y = -5;
+    //     } else if (yDist > 0) {
+    //         this.head.position.y += yDist;
+    //     } else {
+    //         this.head.position.y -= yDist;
+    //     }
+
+    //     // if (this.head.position.x + xDist >= 0) {
+    //     //     this.head.position.x = 0;
+    //     // } else if (this.head.position.x + xDist < -5) {
+    //     //     this.head.position.x = -5;
+    //     // } else if (xDist > 0) {
+    //     //     this.head.position.x += xDist;
+    //     // } else {
+    //     //     this.head.position.x -= xDist;
+    //     // }
+    // }
