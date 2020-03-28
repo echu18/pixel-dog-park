@@ -18,7 +18,7 @@ WIDTH = window.innerWidth;
 
 // //SCENE
 // var floor, lion, fan,
-//     isBlowing = false;
+    isPetting = false;
 
 // //SCREEN VARIABLES
 
@@ -52,16 +52,7 @@ window.addEventListener('resize', () => {
 })
 
 
-document.addEventListener('mousemove', handleMouseMove, false);
-controls = new THREE.OrbitControls(camera, renderer.domElement)
-// controls.enabled = false;
-// controls.enableRotate = false;
-controls.keys = {
-    LEFT: 37, //left arrow
-    UP: 38, // up arrow
-    RIGHT: 39, // right arrow
-    BOTTOM: 40 // down arrow
-}
+
 
 // Set up lighting
 function createLights() {
@@ -107,10 +98,26 @@ function createLights() {
 
 
 // Set up mouse/key/etc events
-
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var mousePos = {x:0, y:0}
+
+
+document.addEventListener('mousemove', handleMouseMove, false);
+document.addEventListener('mousedown', handleMouseDown, false);
+document.addEventListener('mouseup', handleMouseUp, false);
+
+
+controls = new THREE.OrbitControls(camera, renderer.domElement)
+controls.enabled = false;
+controls.enableRotate = false;
+controls.keys = {
+    LEFT: 37, //left arrow
+    UP: 38, // up arrow
+    RIGHT: 39, // right arrow
+    BOTTOM: 40 // down arrow
+}
+
 
 
 
@@ -130,6 +137,23 @@ function handleMouseMove(event) {
 }
 
 
+function handleMouseDown(event) {
+    event.preventDefault();
+    var tx = -1 + (event.clientX / WIDTH) * 2;
+    var ty = 1 - (event.clientY / HEIGHT) * 2;
+    mousePos = { x: tx, y: ty }
+    isPetting = true;
+}
+
+function handleMouseUp(event) {
+    // event.preventDefault();
+    // var tx = -1 + (event.clientX / WIDTH) * 2;
+    // var ty = 1 - (event.clientY / HEIGHT) * 2;
+    // mousePos = { x: tx, y: ty }
+    isPetting = false;
+}
+
+
 
 // Dog.prototype.updateBody = function(speed) {
 //     console.log(mousePos)
@@ -137,67 +161,118 @@ function handleMouseMove(event) {
 //     this.eyes.position.y += (this.tHeadRotY - this.eyes.position.y) / speed;
 // }
 
-function trackEyes () {
-    // console.log(mousePos)
-    // var targetX = normalize(mousePos.x, -1, 1, -100, 100);
-    // var targetY = normalize(mousePos.y, -1, 1, 25, 175);
 
-    yDist = ((mousePos.y * 100) / 1000 - (dog.eyeGlares.position.y))
-    xDist = -((mousePos.x * 100) / 1000 - (dog.eyeGlares.position.x))
+Dog.prototype.petHead = function() {
+    yDist = ((mousePos.y * 100) - (this.head.position.y) / 10)
+    xDist = -((mousePos.x * 10) - (this.head.position.x) / 10)
+
+
+    var xPos = mousePos.x * 100
+    var yPos = mousePos.y * 100
+    // if ((yPos <= 65 && yPos >= 40) && (xPos <= 50 && yPos >= -50 )) {
+
+
+    if ((yPos <= 65 && yPos >= 40) && isPetting ) {
+        
+        if (xPos <= 50 && xPos >= 15 ) {
+            this.head.rotation.z = 0.1;
+        } else if (xPos <= 15 && xPos >= -15) {
+            this.head.rotation.x = -0.2;
+            this.head.position.y = 12;
+        } else if (xPos <= -15 && xPos >= -50) {
+            this.head.rotation.z = -0.1;
+        }
+    }
+
+        // && mousePos.x <= this.head.position.x + 3 
+
+    // if (mousePos.x - 3 <= this.head.position.x + 3 && mousePos.y - 3 >= this.head.position.x + 3) {
+    //     if (this.head.position.y + yDist >= -1) {
+    //         this.head.position.y = -1;
+    //     } else if (this.head.position.y + yDist < -5) {
+    //         this.head.position.y = -5;
+    //     } else if (yDist > 0) {
+    //         this.head.position.y += yDist;
+    //     } else {
+    //         this.head.position.y -= yDist;
+    //     }
+
+    //     // if (this.head.position.x + xDist >= 0) {
+    //     //     this.head.position.x = 0;
+    //     // } else if (this.head.position.x + xDist < -5) {
+    //     //     this.head.position.x = -5;
+    //     // } else if (xDist > 0) {
+    //     //     this.head.position.x += xDist;
+    //     // } else {
+    //     //     this.head.position.x -= xDist;
+    //     // }
+    // }
+}
+
+Dog.prototype.idleAnim = function() {
+    this.head.rotation.x = 0;
+    this.head.rotation.z = 0;
+    this.head.position.x = 0;
+    this.head.position.y = 15;
+    dog.trackEyes();
+}
+
+
+Dog.prototype.trackEyes = function() {
+    yDist = ((mousePos.y * 100) - (this.eyeGlares.position.y)/100)
+    xDist = -((mousePos.x * 100) - (this.eyeGlares.position.x)/100)
   
-    // this.updateBody(10);
-    // debugger
-    // dog.eyes.position.x += -(mousePos.x * 100) / 10;
-    // dog.eyes.position.y += -(mousePos.y * 100) / 10;
-    // dog.eyeGlares.position.x -= ((mousePos.x * 100) % 50);
-    // dog.eyeGlares.position.x += ((mousePos.x * 100) / 10) % 10;
-
-    if (dog.eyeGlares.position.y + yDist >= -1) {
-        dog.eyeGlares.position.y = -1;
-    } else if (dog.eyeGlares.position.y + yDist < -5){ 
-        dog.eyeGlares.position.y = -5;
+    if (this.eyeGlares.position.y + yDist >= -1) {
+        this.eyeGlares.position.y = -1;
+    } else if (this.eyeGlares.position.y + yDist < -5){ 
+        this.eyeGlares.position.y = -5;
     } else if (yDist > 0)  {
-        dog.eyeGlares.position.y += yDist;
+        this.eyeGlares.position.y += yDist;
     } else {
-        dog.eyeGlares.position.y -= yDist;
+        this.eyeGlares.position.y -= yDist;
     }
 
-    if (dog.eyeGlares.position.x + xDist >= 0) {
-        dog.eyeGlares.position.x = 0;
-    } else if (dog.eyeGlares.position.x + xDist < -5){ 
-        dog.eyeGlares.position.x = -5;
+    if (this.eyeGlares.position.x + xDist >= 0) {
+        this.eyeGlares.position.x = 0;
+    } else if (this.eyeGlares.position.x + xDist < -5){ 
+        this.eyeGlares.position.x = -5;
     } else if (xDist > 0)  {
-        dog.eyeGlares.position.x += xDist;
+        this.eyeGlares.position.x += xDist;
     } else {
-        dog.eyeGlares.position.x -= xDist;
+        this.eyeGlares.position.x -= xDist;
     }
-    
-    // dog.eyeGlares.position.y += ;
-    // dog.head.rotation.x += (mousePos.x * 100) / 10;
-    // dog.head.position.y += (normalize(mousePos.y, -140, 260, 20, 50) - dog.head.position.y ) / 50;
-    // dog.head.rotation.z += normalize(mousePos.x, -200, 200, -Math.PI - .3, -Math.PI + .3);
-
 }
 
 
 
 
-function loop() {
-    render();
-    trackEyes();
-    requestAnimationFrame(loop);
-
-}
 
 var render = function () {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
 }
 
+
 createLights();
 createGrassPlane();
 createDog();
 
+function loop() {
+    render();
+    // dog.trackEyes();
+
+    if (isPetting) {
+        dog.petHead();
+    } else {
+        dog.idleAnim();
+    }
+
+
+
+
+
+    requestAnimationFrame(loop);
+}
 
 loop();
 
@@ -213,3 +288,22 @@ function normalize(v, vmin, vmax, tmin, tmax) {
     var tv = tmin + (pc * dt);
     return tv;
 }
+
+
+
+
+
+   // console.log(mousePos)
+    // var targetX = normalize(mousePos.x, -1, 1, -100, 100);
+    // var targetY = normalize(mousePos.y, -1, 1, 25, 175);
+
+    // this.updateBody(10);
+    // debugger
+    // dog.eyes.position.x += -(mousePos.x * 100) / 10;
+    // dog.eyes.position.y += -(mousePos.y * 100) / 10;
+    // dog.eyeGlares.position.x -= ((mousePos.x * 100) % 50);
+    // dog.eyeGlares.position.x += ((mousePos.x * 100) / 10) % 10;
+       // dog.eyeGlares.position.y += ;
+    // dog.head.rotation.x += (mousePos.x * 100) / 10;
+    // dog.head.position.y += (normalize(mousePos.y, -140, 260, 20, 50) - dog.head.position.y ) / 50;
+    // dog.head.rotation.z += normalize(mousePos.x, -200, 200, -Math.PI - .3, -Math.PI + .3);
