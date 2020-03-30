@@ -111,12 +111,10 @@ controls = new THREE.OrbitControls(camera, renderer.domElement)
 
 // User Control HUD
 
-controls.enabled = true;
-// document.getElementById('toggle-controls').addEventListener("click", toggleControls());
+controls.enabled = false;
 
-let btn = document.getElementById('toggle-controls');
-
-btn.addEventListener('click', ()=> toggleControls())
+// Toggle Camera Controls
+document.getElementById('toggle-controls').addEventListener('click', ()=> toggleControls())
 function toggleControls(){
     if (controls.enabled === true ) {
         controls.enabled = false;
@@ -125,6 +123,19 @@ function toggleControls(){
     }
 }
 
+document.getElementById('reset-camera').addEventListener('click', () => resetCamera())
+
+function resetCamera() {
+    camera.position.x = 0;
+    camera.position.y = 100;
+    camera.position.z = -300;
+
+
+    // camera.rotation.x = -15;
+    camera.rotation.x = -15;
+    camera.rotation.y = 0.2;
+    camera.rotation.z = 600;
+}
 
 // var enableRotate = document.getElementById('enable-rotate');
 // enableRotate.onclick = function () {
@@ -240,7 +251,7 @@ Dog.prototype.idleAnim = function() {
     this.head.position.x = 0;
     this.head.position.y = 15;
 
-    this.eyeGlares.position = (0, -1, 0);
+    this.eyeGlares.position = (0, -1, -10);
     dog.trackCursor();
 }
 
@@ -265,9 +276,6 @@ function loop() {
     } else {
         dog.idleAnim();
     }
-
-    console.log(controls.enabled);
-
 
 
     requestAnimationFrame(loop);
