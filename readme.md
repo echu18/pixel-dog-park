@@ -1,6 +1,6 @@
 # Pixel Dog Park
 
-[Pixel Dog Park](https://echu18.github.io/pixel-dog-park/ is a 3D pixel dog that users can interact with through their web browser.
+[Pixel Dog Park](https://echu18.github.io/pixel-dog-park/) is a 3D pixel dog that users can interact with through their web browser.
 
 
 
